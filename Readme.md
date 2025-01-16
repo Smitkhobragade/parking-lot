@@ -1,0 +1,2 @@
+## Parking Lot System
+A simple CLI-based parking lot management system written in Java. This system uses a MySQL database for persistence and provides functionalities like slot management, billing, and reporting.
