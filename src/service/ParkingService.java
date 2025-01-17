@@ -12,12 +12,14 @@ public class ParkingService {
         do {
             System.out.println("\n=== Parking Lot System ===");
             System.out.println("1. Test Database Connection");
+            System.out.println("2. Create Schema Setup");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
 
             switch (choice) {
                 case 1 -> DatabaseConfig.testConnection();
+                case 2 -> DatabaseConfig.createSchemaSetup();
                 case 0 -> System.out.println("Exiting... Thank you!");
                 default -> System.out.println("Invalid choice. Please try again.");
             }
