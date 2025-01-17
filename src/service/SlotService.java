@@ -90,6 +90,34 @@ public class SlotService {
         }
     }
 
+    public void viewEmptySlots() {
+        String query = "SELECT slot_number FROM parking_slots WHERE is_occupied = false ORDER BY slot_number";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
+            System.out.println("\n=== Empty Parking Slots ===");
+            while (resultSet.next()) {
+                String slotNumber = resultSet.getString("slot_number");
+                System.out.println("Slot " + slotNumber);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error viewing empty slots: " + e.getMessage());
+        }
+    }
+
+    public void viewOccupiedSlots() {
+        String query = "SELECT slot_number FROM parking_slots WHERE is_occupied = true ORDER BY slot_number";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            System.out.println("\n=== Occupied Parking Slots ===");
+            while (resultSet.next()) {
+                String slotNumber = resultSet.getString("slot_number");
+                System.out.println("Slot " + slotNumber);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error viewing occupied slots: " + e.getMessage());
+        }
+    }
 
 }
