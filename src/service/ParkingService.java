@@ -22,6 +22,8 @@ public class ParkingService {
             System.out.println("3. Add Slot");
             System.out.println("4. Delete Slot");
             System.out.println("5. View All Slots");
+            System.out.println("6. Occupy SLots");
+            System.out.println("7. Release Slots");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -40,6 +42,16 @@ public class ParkingService {
                     slotService.deleteSlot(slotNumber);
                 }
                 case 5 -> slotService.viewAllSlots();
+                case 6 -> {
+                    System.out.print("Enter slot number to occupy (e.g., A1, B2): ");
+                    String slotNumber = scanner.next();
+                    slotService.occupySlot(slotNumber);
+                }
+                case 7 -> {
+                    System.out.print("Enter slot number to release (e.g., A1, B2): ");
+                    String slotNumber = scanner.next();
+                    slotService.releaseSlot(slotNumber);
+                }
                 case 0 -> System.out.println("Exiting... Thank you!");
                 default -> System.out.println("Invalid choice. Please try again.");
             }

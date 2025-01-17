@@ -60,5 +60,36 @@ public class SlotService {
         }
     }
 
+    public void occupySlot(String slotNumber) {
+        String query = "UPDATE parking_slots SET is_occupied = true WHERE slot_number = ? AND is_occupied = false";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, slotNumber);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Slot " + slotNumber + " is now occupied.");
+            } else {
+                System.out.println("Slot " + slotNumber + " is already occupied or does not exist.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error occupying slot: " + e.getMessage());
+        }
+    }
+
+    public void releaseSlot(String slotNumber) {
+        String query = "UPDATE parking_slots SET is_occupied = false WHERE slot_number = ? AND is_occupied = true";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, slotNumber);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Slot " + slotNumber + " is now free.");
+            } else {
+                System.out.println("Slot " + slotNumber + " is already free or does not exist.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error releasing slot: " + e.getMessage());
+        }
+    }
+
+
 
 }
