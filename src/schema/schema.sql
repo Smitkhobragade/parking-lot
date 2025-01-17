@@ -1,7 +1,7 @@
 -- parking_slots table
 CREATE TABLE IF NOT EXISTS parking_slots (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    slot_number VARCHAR(10) NOT NULL,
+    slot_number VARCHAR(10) NOT NULL UNIQUE,
     is_occupied BOOLEAN DEFAULT FALSE
 );
 
