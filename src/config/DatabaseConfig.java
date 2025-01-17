@@ -1,8 +1,11 @@
 package config;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -31,8 +34,34 @@ public class DatabaseConfig {
     public static void testConnection() {
         try (Connection connection = getConnection()) {
             System.out.println("Database connection successful!");
+            runSchemaSetup(connection);
+            System.out.println("Database connection successful and schema set up!");
         } catch (Exception e) {
             System.err.println("Database connection failed: " + e.getMessage());
+        }
+    }
+
+    private static void runSchemaSetup(Connection connection) {
+        try {
+            InputStream schemaStream = DatabaseConfig.class.getClassLoader().getResourceAsStream("schema/schema.sql");
+            if (schemaStream == null) {
+                throw new RuntimeException("schema.sql file not found in resources");
+            }
+
+            String schema = new String(schemaStream.readAllBytes(), StandardCharsets.UTF_8);
+
+            String[] queries = schema.split(";");
+
+            try (Statement statement = connection.createStatement()) {
+                for (String query : queries) {
+                    if (!query.trim().isEmpty()) {
+                        statement.executeUpdate(query.trim());
+                    }
+                }
+                System.out.println("Schema setup executed successfully.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error executing schema setup: " + e.getMessage());
         }
     }
 }
