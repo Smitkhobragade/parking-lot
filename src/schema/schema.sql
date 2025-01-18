@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS parking_slots (
 -- Entry vehicles table
 CREATE TABLE IF NOT EXISTS vehicles (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    vehicle_number VARCHAR(20) NOT NULL UNIQUE,
+    vehicle_number VARCHAR(20) NOT NULL,
     entry_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
     slot_number VARCHAR(10),

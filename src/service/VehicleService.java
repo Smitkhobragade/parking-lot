@@ -41,10 +41,11 @@ public class VehicleService {
             return;
         }
 
-        String query = "INSERT INTO vehicles (vehicle_number, slot_number, is_active) VALUES (?, ?, true)";
+        String query = "INSERT INTO vehicles (vehicle_number, slot_number, entry_time, is_active) VALUES (?, ?, ?, true)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, vehicleNumber);
             preparedStatement.setString(2, slotNumber);
+            preparedStatement.setTimestamp(3, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 slotService.occupySlot(slotNumber);
@@ -59,7 +60,7 @@ public class VehicleService {
 
     public void exitVehicle(String vehicleNumber) {
         String selectQuery = "SELECT id, slot_number, entry_time FROM vehicles WHERE vehicle_number = ? AND is_active = true";
-        String insertExitQuery = "INSERT INTO vehicle_exit (vehicle_id, vehicle_number, exit_time, total_hours, total_charge) VALUES (?, ?, NOW(), ?, ?)";
+        String insertExitQuery = "INSERT INTO vehicle_exit (vehicle_id, vehicle_number, exit_time, total_hours, total_charge) VALUES (?, ?, ?, ?, ?)";
         String deactivateVehicleQuery = "UPDATE vehicles SET is_active = false WHERE id = ?";
 
         try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
@@ -87,8 +88,9 @@ public class VehicleService {
                     try (PreparedStatement insertExitStatement = connection.prepareStatement(insertExitQuery)) {
                         insertExitStatement.setInt(1, vehicleId);
                         insertExitStatement.setString(2, vehicleNumber);
-                        insertExitStatement.setInt(3, totalHours);
-                        insertExitStatement.setDouble(4, totalCharge);
+                        insertExitStatement.setTimestamp(3, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
+                        insertExitStatement.setInt(4, totalHours);
+                        insertExitStatement.setDouble(5, totalCharge);
 
                         int rowsInserted = insertExitStatement.executeUpdate();
                         if (rowsInserted > 0) {
