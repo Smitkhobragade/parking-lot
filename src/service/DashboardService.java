@@ -32,4 +32,23 @@ public class DashboardService {
         }
     }
 
+    public void getTotalRevenueInDateRange(String startDate, String endDate) {
+        String query = "SELECT SUM(total_charge) AS total_revenue FROM vehicle_exit WHERE DATE(exit_time) BETWEEN ? AND ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, startDate);
+            preparedStatement.setString(2, endDate);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    double totalRevenue = resultSet.getDouble("total_revenue");
+                    System.out.println("Total revenue from " + startDate + " to " + endDate + ": ₹" + totalRevenue);
+                } else {
+                    System.out.println("No data available for the given date range.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving total revenue: " + e.getMessage());
+        }
+    }
+
 }
