@@ -30,6 +30,7 @@ public class ParkingService {
             System.out.println("9. View Occupied Slots");
             System.out.println("10. View First Free Slot");
             System.out.println("11. Add Vehicle");
+            System.out.println("12. Remove the Vehicle");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             while (!scanner.hasNextInt()) {
@@ -75,6 +76,11 @@ public class ParkingService {
                     System.out.print("Enter vehicle number to add: ");
                     String vehicleNumber = scanner.next();
                     vehicleService.addVehicle(vehicleNumber);
+                }
+                case 12 -> {
+                    System.out.print("Enter vehicle number to exit: ");
+                    String vehicleNumber = scanner.next();
+                    vehicleService.exitVehicle(vehicleNumber);
                 }
                 case 0 -> System.out.println("Exiting... Thank you!");
                 default -> System.out.println("Invalid choice. Please try again.");
