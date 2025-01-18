@@ -49,7 +49,13 @@ public class ParkingService {
                 case 4 -> {
                     System.out.print("Enter slot number to delete: ");
                     String slotNumber = scanner.next();
-                    slotService.deleteSlot(slotNumber);
+                    System.out.print("Are you sure you want to delete slot " + slotNumber + "? (yes/no): ");
+                    String confirmation = scanner.next();
+                    if (confirmation.equalsIgnoreCase("yes")) {
+                        slotService.deleteSlot(slotNumber);
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
                 }
                 case 5 -> slotService.viewAllSlots();
                 case 6 -> {
