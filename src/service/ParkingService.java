@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 public class ParkingService {
     private final SlotService slotService;
+    private final VehicleService vehicleService;
 
     public ParkingService() {
         this.slotService = new SlotService();
+        this.vehicleService = new VehicleService(this.slotService);
     }
 
     public void startCLI() {
@@ -26,9 +28,14 @@ public class ParkingService {
             System.out.println("7. Release Slots");
             System.out.println("8. View Empty Slots");
             System.out.println("9. View Occupied Slots");
-            System.out.println("9. View First Free Slot");
+            System.out.println("10. View First Free Slot");
+            System.out.println("11. Add Vehicle");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.next(); // invalid input
+            }
             choice = scanner.nextInt();
 
             switch (choice) {
@@ -58,6 +65,11 @@ public class ParkingService {
                 case 8 -> slotService.viewEmptySlots();
                 case 9 -> slotService.viewOccupiedSlots();
                 case 10 -> System.out.println(slotService.getFirstAvailableSlot());
+                case 11 -> {
+                    System.out.print("Enter vehicle number to add: ");
+                    String vehicleNumber = scanner.next();
+                    vehicleService.addVehicle(vehicleNumber);
+                }
                 case 0 -> System.out.println("Exiting... Thank you!");
                 default -> System.out.println("Invalid choice. Please try again.");
             }
