@@ -30,16 +30,34 @@ public class SlotService {
     }
 
     public void deleteSlot(String slotNumber) {
-        String query = "DELETE FROM parking_slots WHERE slot_number = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, slotNumber);
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Slot " + slotNumber + " deleted successfully!");
-            } else {
-                System.out.println("Slot " + slotNumber + " does not exist.");
+        String checkQuery = "SELECT is_occupied FROM parking_slots WHERE slot_number = ?";
+        try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+            // Check if the slot is occupied
+            checkStatement.setString(1, slotNumber);
+            try (ResultSet resultSet = checkStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    boolean isOccupied = resultSet.getBoolean("is_occupied");
+                    if (isOccupied) {
+                        System.out.println("Cannot delete slot " + slotNumber + " because it is currently occupied.");
+                        return;
+                    }
+                } else {
+                    System.out.println("Slot " + slotNumber + " does not exist.");
+                    return;
+                }
             }
-        } catch (SQLException e) {
+
+            String query = "DELETE FROM parking_slots WHERE slot_number = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, slotNumber);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Slot " + slotNumber + " deleted successfully!");
+                } else {
+                    System.out.println("Slot " + slotNumber + " does not exist.");
+                }
+            }
+        }catch (SQLException e) {
             System.err.println("Error deleting slot: " + e.getMessage());
         }
     }
