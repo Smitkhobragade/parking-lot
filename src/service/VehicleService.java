@@ -4,6 +4,7 @@ import config.DatabaseConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class VehicleService {
@@ -16,6 +17,22 @@ public class VehicleService {
     }
 
     public void addVehicle(String vehicleNumber) {
+        // Check if the vehicle already exists with an active state
+        String checkQuery = "SELECT id FROM vehicles WHERE vehicle_number = ? AND is_active = true";
+        try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+            checkStatement.setString(1, vehicleNumber);
+
+            try (ResultSet resultSet = checkStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    System.out.println("Vehicle " + vehicleNumber + " is already parked and active. Cannot add it again.");
+                    return;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking vehicle existence: " + e.getMessage());
+            return;
+        }
+
         // Find Free Slot
         String slotNumber = slotService.getFirstAvailableSlot();
 
