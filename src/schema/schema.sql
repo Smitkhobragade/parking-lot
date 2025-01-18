@@ -5,14 +5,14 @@ CREATE TABLE IF NOT EXISTS parking_slots (
     is_occupied BOOLEAN DEFAULT FALSE
 );
 
--- vehicles table
--- Updated vehicles table
+-- Entry vehicles table
 CREATE TABLE IF NOT EXISTS vehicles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     vehicle_number VARCHAR(20) NOT NULL UNIQUE,
     entry_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
     slot_number VARCHAR(10),
-    FOREIGN KEY (slot_number) REFERENCES parking_slots(slot_number) ON DELETE CASCADE
+    FOREIGN KEY (slot_number) REFERENCES parking_slots(slot_number)
 );
 
 
@@ -24,5 +24,5 @@ CREATE TABLE IF NOT EXISTS vehicle_exit (
     exit_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     total_hours INT,
     total_charge DECIMAL(10, 2),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
 );

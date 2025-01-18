@@ -138,4 +138,21 @@ public class SlotService {
         }
     }
 
+    public String getFirstAvailableSlot() {
+        String query = "SELECT slot_number FROM parking_slots WHERE is_occupied = false ORDER BY slot_number LIMIT 1";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            if (resultSet.next()) {
+                return resultSet.getString("slot_number");
+            } else {
+                return null; // No slots available
+            }
+        } catch (SQLException e) {
+            System.err.println("Error finding an available slot: " + e.getMessage());
+            return null;
+        }
+    }
+
+
 }
