@@ -5,12 +5,16 @@ CREATE TABLE IF NOT EXISTS parking_slots (
     is_occupied BOOLEAN DEFAULT FALSE
 );
 
--- vehicles table
+-- Entry vehicles table
 CREATE TABLE IF NOT EXISTS vehicles (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    vehicle_number VARCHAR(20) NOT NULL,
-    entry_time DATETIME DEFAULT CURRENT_TIMESTAMP
+    vehicle_number VARCHAR(20) NOT NULL UNIQUE,
+    entry_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
+    slot_number VARCHAR(10),
+    FOREIGN KEY (slot_number) REFERENCES parking_slots(slot_number)
 );
+
 
 -- vehicle_exit table
 CREATE TABLE IF NOT EXISTS vehicle_exit (
