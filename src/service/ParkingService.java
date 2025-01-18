@@ -7,10 +7,12 @@ import java.util.Scanner;
 public class ParkingService {
     private final SlotService slotService;
     private final VehicleService vehicleService;
+    private final DashboardService dashboardService;
 
     public ParkingService() {
         this.slotService = new SlotService();
         this.vehicleService = new VehicleService(this.slotService);
+        this.dashboardService = new DashboardService();
     }
 
     public void startCLI() {
@@ -31,6 +33,8 @@ public class ParkingService {
             System.out.println("10. View First Free Slot");
             System.out.println("11. Add Vehicle");
             System.out.println("12. Remove the Vehicle");
+            System.out.println("13. View total Users served");
+            System.out.println("14. View total Revenue");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
             while (!scanner.hasNextInt()) {
@@ -81,6 +85,18 @@ public class ParkingService {
                     System.out.print("Enter vehicle number to exit: ");
                     String vehicleNumber = scanner.next();
                     vehicleService.exitVehicle(vehicleNumber);
+                }
+                case 13 -> {
+                    System.out.print("Enter the date (YYYY-MM-DD): ");
+                    String date = scanner.next();
+                    dashboardService.getTotalUsersServedInDay(date);
+                }
+                case 14 -> {
+                    System.out.print("Enter the start date (YYYY-MM-DD): ");
+                    String startDate = scanner.next();
+                    System.out.print("Enter the end date (YYYY-MM-DD): ");
+                    String endDate = scanner.next();
+                    dashboardService.getTotalRevenueInDateRange(startDate, endDate);
                 }
                 case 0 -> System.out.println("Exiting... Thank you!");
                 default -> System.out.println("Invalid choice. Please try again.");
