@@ -75,6 +75,7 @@ public class ParkingService {
             System.out.println("1. Add Slot");
             System.out.println("2. Delete Slot");
             System.out.println("3. View All Slots");
+            System.out.println("4. Initialize Slots");
             System.out.println("0. Back to Main Menu");
             System.out.print("Enter your choice: ");
             while (!scanner.hasNextInt()) {
@@ -101,6 +102,11 @@ public class ParkingService {
                     }
                 }
                 case 3 -> slotService.viewAllSlots();
+                case 4 -> {
+                    System.out.print("Enter the number of slots to initialize: ");
+                    int numberOfSlots = scanner.nextInt();
+                    slotService.initializeNSlots(numberOfSlots);
+                }
                 case 0 -> System.out.println("Returning to main menu...");
                 default -> System.out.println("Invalid choice. Please try again.");
             }
