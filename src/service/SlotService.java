@@ -29,6 +29,14 @@ public class SlotService {
         }
     }
 
+    public void initializeNSlots(int numberOfSlots) {
+        for (int i = 1; i <= numberOfSlots; i++) {
+            String slotNumber = "S" + i;  // Generate slot like S1, S2, S3, ...
+            addSlot(slotNumber);
+        }
+        System.out.println(numberOfSlots + " slots have been initialized.");
+    }
+
     public void deleteSlot(String slotNumber) {
         String checkQuery = "SELECT is_occupied FROM parking_slots WHERE slot_number = ?";
         try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
