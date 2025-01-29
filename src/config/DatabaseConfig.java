@@ -14,7 +14,8 @@ public class DatabaseConfig {
     private static Connection connection;
 
     private static final Dotenv dotenv = Dotenv.configure()
-            .directory("./")  // Path to the .env file
+            .directory(System.getProperty("user.dir"))
+            .filename(".env")  // Explicitly set the filename
             .load();
     private static final String HOST = dotenv.get("MYSQL_HOST");
     private static final String DB = dotenv.get("MYSQL_DB");

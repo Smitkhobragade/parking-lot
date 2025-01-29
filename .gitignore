@@ -2,8 +2,6 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-lib/
-/src/.env
 
 ### Eclipse ###
 .apt_generated
